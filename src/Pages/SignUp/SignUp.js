@@ -6,23 +6,23 @@ import { AuthContext } from '../../contexts/AuthProvider';
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createUser, update_user_profile } = useContext(AuthContext);
-    const [signUpError, setSignUPError] = useState('')
+    const { createUser, updateUser } = useContext(AuthContext);
+    const [signUpError, setSignUPError] = useState('');
     const navigate = useNavigate();
 
     const handleSignUp = (data) => {
-        console.log(data);
         setSignUPError('');
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                const profile = { displayName: data.name };
-
-                update_user_profile(profile)
+                toast('User Created Successfully.')
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
                     .then(() => {
-                        toast.success('Account created successfully');
-                        navigate('/');
+                        save_user(data.name, data.email)
                     })
                     .catch(err => console.log(err));
             })
@@ -30,7 +30,33 @@ const SignUp = () => {
                 console.log(error)
                 setSignUPError(error.message)
             });
-    }
+    };
+
+    const save_user = (name, email) => {
+        const user = { name, email };
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                get_user_token(email)
+            });
+    };
+
+    const get_user_token = email => {
+        fetch(`http://localhost:5000/jwt?email=${email}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.accessToken) {
+                    localStorage.setItem('access_token', data.accessToken);
+                    navigate('/');
+                };
+            });
+    };
 
     return (
         <div className='h-[800px] flex justify-center items-center'>
