@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
-import useToken from '../../../hooks/useToken';
 
 const Allusers = () => {
 
