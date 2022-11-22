@@ -6,13 +6,15 @@ const MyApoinment = () => {
 
     const { user } = React.useContext(AuthContext);
 
-    const url = `http://localhost:5000/bookings?email=${user.email}`;
-    console.log(url);
 
     const { data: bookings = [] } = useQuery({
         queryKey: ["booking", user?.email],
         queryFn: async () => {
-            const res = await fetch(url);
+            const res = await fetch(`http://localhost:5000/bookings?email=${user.email}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('access_token')}`
+                }
+            });
             const data = await res.json();
             return data;
         }
@@ -20,7 +22,7 @@ const MyApoinment = () => {
 
     return (
         <div>
-            <h3 className='text-3xl'>My Apoinments</h3>
+            <h3 className='text-3xl mb-5'>My Apoinments</h3>
             <div className="overflow-x-auto">
                 <table className="table w-full">
                     <thead>
@@ -34,7 +36,7 @@ const MyApoinment = () => {
                     </thead>
                     <tbody>
                         {
-                            bookings.map((booking, index) => <tr key={booking._id}>
+                            bookings?.map((booking, index) => <tr key={booking._id}>
                                 <th>{index+1}</th>
                                 <td>{booking.patient}</td>
                                 <td>{booking.treatment}</td>
@@ -42,13 +44,6 @@ const MyApoinment = () => {
                                 <td>{booking.slot}</td>
                             </tr>)
                         }
-                        {/* <tr>
-                            <th>1</th>
-                            <td>Cy Ganderton</td>
-                            <td>Quality Control Specialist</td>
-                            <td>Blue</td>
-                            <td>Blue</td>
-                        </tr> */}
                     </tbody>
                 </table>
             </div>
