@@ -5,7 +5,7 @@ import { AuthContext } from '../../../contexts/AuthProvider';
 
 const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
     // treatment is just another name of appointmentOptions with name, slots, _id
-    const { name: treatmentName, slots } = treatment;
+    const { name: treatmentName, slots, price } = treatment;
     const date = format(selectedDate, 'PP');
     const { user } = useContext(AuthContext);
 
@@ -20,15 +20,9 @@ const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
         const booking = {
             appointmentDate: date,
             treatment: treatmentName,
-            patient: name,
-            slot,
-            email,
-            phone,
+            patient: name, slot, email, phone, price
         }
 
-        // TODO: send data to the server
-        // and once data is saved then close the modal 
-        // and display success toast
         fetch('http://localhost:5000/bookings', {
             method: 'POST',
             headers: {
@@ -38,14 +32,14 @@ const BookingModal = ({ treatment, setTreatment, selectedDate, refetch }) => {
         })
             .then(res => res.json())
             .then(data => {
-                
+
                 if (data.acknowledged) {
                     setTreatment(null);
                     toast.success('Booking confirmed');
                     refetch();
                 }
                 else {
-                    toast.error(data.massage);
+                    toast.error(data.message);
                     setTreatment(null);
                 }
             })
