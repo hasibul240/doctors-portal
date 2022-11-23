@@ -20,13 +20,12 @@ const AddDoctor = () => {
             return data;
         }
     });
-    console.log(img_host_key)
 
     const handleAddDoctor = (data) => {
         const image = data.image[0];
         const formData = new FormData();
         formData.append('image', image);
-        const url = `https://api.imgbb.com/1/upload?expiration=600&key=${img_host_key}`;
+        const url = `https://api.imgbb.com/1/upload?key=${img_host_key}`;
         fetch(url, {
             method: 'POST',
             body: formData
@@ -39,19 +38,22 @@ const AddDoctor = () => {
                         specialty: data.specialty,
                         image: imgdata.data.url
                     }
+                    
                     fetch('http://localhost:5000/doctors', {
                         method: 'POST',
-                        headers: { 'content-type': 'application/json' },
-                        authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            authorization: `Bearer ${localStorage.getItem('access_token')}`
+                        },
                         body: JSON.stringify(doctor)
                     }).then(res => res.json())
                         .then(result => {
-                            console.log(result)
+                            
                             toast.success(`${data.name} is added successfully`)
                             navigate('/dashboard/managedoctors')
                         })
                 }
-                // console.log(imgdata)
+                
             })
     }
 

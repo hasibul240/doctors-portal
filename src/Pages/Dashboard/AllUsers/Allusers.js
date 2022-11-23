@@ -23,7 +23,7 @@ const Allusers = () => {
         }).then(res => res.json())
             .then(data => {
                 if (data.modifiedCount > 0) {
-                    console.log(data)
+                    
                     toast.success('User is now admin');
                     refetch();
                 }

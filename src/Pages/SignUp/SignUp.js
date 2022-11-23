@@ -21,8 +21,8 @@ const SignUp = () => {
         setSignUPError('');
         createUser(data.email, data.password)
             .then(result => {
-                const user = result.user;
-                console.log(user);
+                // const user = result.user;
+                
                 toast.success('User Created Successfully.')
                 const userInfo = {
                     displayName: data.name
@@ -34,7 +34,7 @@ const SignUp = () => {
                     .catch(err => console.log(err));
             })
             .catch(error => {
-                console.log(error)
+                
                 setSignUPError(error.message)
             });
     };
