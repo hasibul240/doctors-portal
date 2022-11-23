@@ -6,8 +6,10 @@ import Appointment from "../../Pages/Appointment/Appointment/Appointment";
 import Allusers from "../../Pages/Dashboard/AllUsers/Allusers";
 import ManageDoctoes from "../../Pages/Dashboard/Managedoctor/ManageDoctoes";
 import MyApoinment from "../../Pages/Dashboard/MyApoinment/MyApoinment";
+import Payment from "../../Pages/Dashboard/Payment/Payment";
 import Home from "../../Pages/Home/Home/Home";
 import Login from "../../Pages/Login/Login";
+import DisplayError from "../../Pages/Shared/DisplayError/DisplayError";
 import SignUp from "../../Pages/SignUp/SignUp";
 import AdminRoute from "../PrivateRoute/PrivateRoute";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
@@ -16,6 +18,7 @@ const router = createBrowserRouter([
     {
         path: '/',
         element: <Main></Main>, 
+        errorElement: <DisplayError/>,
         children: [
             {
                 path: '/',
@@ -38,6 +41,7 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <PrivateRoute><DashbordLayout /></PrivateRoute>,
+        errorElement: <DisplayError/>,
         children: [
             {
                 path: '/dashboard',
@@ -54,6 +58,13 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/managedoctors',
                 element: <AdminRoute><ManageDoctoes/></AdminRoute>
+            },
+            {
+                path: '/dashboard/payment/:id',
+                loader: ({ params }) => fetch(`http://localhost:5000/bookings/${params.id}`, {
+                    headers: {authorization: `Bearer ${localStorage.getItem('access_token')}`}
+                }),
+                element: <AdminRoute><Payment/></AdminRoute>
             }
         ]
     }
