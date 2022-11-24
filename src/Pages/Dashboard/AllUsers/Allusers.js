@@ -7,7 +7,7 @@ const Allusers = () => {
     const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/users');
+            const res = await fetch('https://doctors-portal-server-two-phi.vercel.app/users');
             const data = await res.json();
             return data;
         }
@@ -15,7 +15,7 @@ const Allusers = () => {
 
 
     const handle_make_admin = (id) => {
-        fetch(`http://localhost:5000/users/admin/${id}`, {
+        fetch(`https://doctors-portal-server-two-phi.vercel.app/users/admin/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('access_token')}`
@@ -31,7 +31,7 @@ const Allusers = () => {
     }
 
     const handle_delete = (id) => {
-        console.log(id)
+        // console.log(id)
     }
 
     return (

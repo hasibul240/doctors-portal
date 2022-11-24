@@ -41,7 +41,7 @@ const SignUp = () => {
 
     const save_user = (name, email) => {
         const user = { name, email };
-        fetch('http://localhost:5000/users', {
+        fetch('https://doctors-portal-server-two-phi.vercel.app/users', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
@@ -50,7 +50,6 @@ const SignUp = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
                 if (data.acknowledged) {
                     setUserEmail(email)
                 }
