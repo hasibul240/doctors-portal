@@ -64,7 +64,7 @@ const router = createBrowserRouter([
                 loader: ({ params }) => fetch(`https://doctors-portal-server-two-phi.vercel.app/bookings/${params.id}`, {
                     headers: {authorization: `Bearer ${localStorage.getItem('access_token')}`}
                 }),
-                element: <AdminRoute><Payment/></AdminRoute>
+                element: <Payment/>
             }
         ]
     }
